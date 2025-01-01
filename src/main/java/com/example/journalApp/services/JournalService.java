@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ public class JournalService {
     private JournalRepository journalRepository;
 
     public void saveEntry (JournalEntry entry) {
+        entry.setDate(LocalDateTime.now());
         journalRepository.save(entry);
     }
 

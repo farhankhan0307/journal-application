@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +39,6 @@ public class JournalController {
     @PostMapping
     public ResponseEntity<?> createNewEntry(@RequestBody JournalEntry newEntry) {
         try {
-            newEntry.setDate(LocalDateTime.now());
             journalService.saveEntry(newEntry);
             return new ResponseEntity<>(newEntry, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -52,8 +50,8 @@ public class JournalController {
     public ResponseEntity<?> updatePreviousEntry(@PathVariable ObjectId myId, @RequestBody JournalEntry updatedEntry) {
         JournalEntry oldEntry = journalService.findById(myId).orElse(null);
         if (oldEntry != null) {
-            oldEntry.setName(updatedEntry.getName() != null && !updatedEntry.getName().equals("") ? updatedEntry.getName() : oldEntry.getName());
-            oldEntry.setContent(updatedEntry.getContent() != null && !updatedEntry.getContent().equals("") ? updatedEntry.getContent() : oldEntry.getContent());
+            oldEntry.setTitle(updatedEntry.getTitle() != null && !updatedEntry.getTitle().isEmpty() ? updatedEntry.getTitle() : oldEntry.getTitle());
+            oldEntry.setContent(updatedEntry.getContent() != null && !updatedEntry.getContent().isEmpty() ? updatedEntry.getContent() : oldEntry.getContent());
             journalService.saveEntry(oldEntry);
             return new ResponseEntity<>(oldEntry, HttpStatus.OK);
         }
